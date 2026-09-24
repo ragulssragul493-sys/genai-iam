@@ -171,6 +171,7 @@ def toggle_user(user_id):
     audit("USER_STATUS", f"User {user_id} status toggled")
     return redirect(url_for("dashboard"))
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)
