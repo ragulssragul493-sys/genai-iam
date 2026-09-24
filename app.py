@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
+import os
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "change-this-secret-in-production"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-secret")
 DB = "iam.db"
 
 def db():
