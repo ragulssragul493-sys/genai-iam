@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Generative AI Dashboard</h2>
+            <p class="text-muted">
+                Manage AI platform access and permissions
+            </p>
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+            Logout
+        </a>
+    </div>
+
+    {% if session.get('role') == 'admin' %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Admin Dashboard</h5>
+        </div>
+
+        <div class="card-body">
+
+            <h6>AI Platforms</h6>
+
+            {% if platforms %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for platform in platforms %}
+                            <tr>
+                                <td>{{ platform[1] }}</td>
+                                <td>{{ platform[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted">No AI platforms available.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="mb-0">Available AI Platforms</h5>
+        </div>
+
+        <div class="card-body">
+
+            {% if platforms %}
+
+                <div class="row">
+
+                    {% for platform in platforms %}
+
+                    <div class="col-md-6 mb-3">
+
+                        <div class="card h-100 border">
+
+                            <div class="card-body">
+
+                                <h5>{{ platform[1] }}</h5>
+
+                                <p class="text-muted">
+                                    {{ platform[2] }}
+                                </p>
+
+                                <form method="POST"
+                                      action="{{ url_for('request_access', platform_id=platform[0]) }}">
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        Request Access
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="text-muted">
+                    No AI platforms available.
+                </p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
